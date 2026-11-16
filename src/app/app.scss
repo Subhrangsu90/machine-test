@@ -1,0 +1,293 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 500;
+  text-decoration: none;
+
+  &:focus {
+    top: 1rem;
+  }
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 16.5rem minmax(0, 1fr);
+  min-height: 100dvh;
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  height: 100dvh;
+  padding: 1.25rem 0.875rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.brand-text {
+  display: grid;
+  line-height: 1.25;
+}
+
+.brand-name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 150ms var(--ease),
+    border-color 150ms var(--ease);
+
+  &::after {
+    content: '';
+    width: 1.875rem;
+    height: 1.125rem;
+    margin-left: auto;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 0.5625rem 50%, var(--surface) 0.375rem, transparent 0.4rem),
+      var(--border-strong);
+    transition: background 200ms var(--ease);
+  }
+
+  &[aria-pressed='true']::after {
+    background:
+      radial-gradient(
+        circle at calc(100% - 0.5625rem) 50%,
+        var(--on-accent) 0.375rem,
+        transparent 0.4rem
+      ),
+      var(--accent);
+  }
+
+  &:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+}
+
+.theme-icon {
+  display: grid;
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.nav-label {
+  margin-bottom: 0.375rem;
+  padding: 0 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.nav-group ul {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4375rem 0.625rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition:
+    background-color 150ms var(--ease),
+    color 150ms var(--ease);
+
+  &:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  &.active {
+    background: var(--surface-3);
+    color: var(--text);
+    font-weight: 500;
+
+    .nav-num {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+  }
+}
+
+.nav-num {
+  display: grid;
+  place-items: center;
+  min-width: 1.625rem;
+  height: 1.25rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  transition:
+    background-color 150ms var(--ease),
+    color 150ms var(--ease);
+}
+
+/* ---------- Content ---------- */
+
+.content {
+  width: 100%;
+  max-width: 68rem;
+  padding: 3rem clamp(1rem, 4vw, 3.5rem) 4rem;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* ---------- Narrow screens: sidebar becomes a top bar ---------- */
+
+@media (max-width: 56rem) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: sticky;
+    z-index: 10;
+    height: auto;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    overflow: visible;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+
+  /* Keep these for screen readers (button name, aria-labelledby) but hide them visually. */
+  .theme-label,
+  .nav-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .theme-toggle {
+    width: auto;
+    padding: 0.4375rem;
+    background: transparent;
+  }
+
+  .nav {
+    flex-direction: row;
+    gap: 0.5rem;
+    margin: 0 -1rem;
+    padding: 0 1rem 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-group {
+    flex: none;
+  }
+
+  .nav-group ul {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .nav-link {
+    white-space: nowrap;
+  }
+
+  .content {
+    padding-top: 2rem;
+  }
+}
