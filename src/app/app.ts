@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ThemeStore } from './core/theme/theme.store';
+import { PageHeader } from './shared/ui/page-header';
 
 interface NavLink {
   path: string;
@@ -15,7 +16,7 @@ interface NavGroup {
 }
 
 @Component({
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, PageHeader],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',

@@ -1,15 +1,11 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { readPageMeta } from '../page-meta';
 
 /** Temporary page body shown until a task is built. Delete its usage when you start the task. */
 @Component({
   selector: 'app-page-placeholder',
   template: `
-    <header class="page-header">
-      <p class="eyebrow">Task {{ taskLabel() }}</p>
-      <h1>{{ heading() }}</h1>
-      <p class="lede">{{ summary() }}</p>
-    </header>
-
     <section class="empty card" aria-labelledby="placeholder-title">
       <div class="empty-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="20" height="20">
@@ -25,10 +21,10 @@ import { Component, computed, input } from '@angular/core';
       </div>
       <h2 id="placeholder-title">Not built yet</h2>
       <p class="muted">
-        Follow the steps in <code>docs/Angular Machine Test Practice — {{ docPart() }}.md</code>,
+        Follow the steps in <code>docs/Angular Machine Test Practice — {{ docPart }}.md</code>,
         then replace this placeholder.
       </p>
-      <span class="badge">Target: {{ target() }}</span>
+      <span class="badge">Target: {{ target }}</span>
     </section>
   `,
   styles: `
@@ -60,11 +56,8 @@ import { Component, computed, input } from '@angular/core';
   `,
 })
 export class PagePlaceholder {
-  readonly task = input.required<number>();
-  readonly heading = input.required<string>();
-  readonly summary = input.required<string>();
-  readonly target = input.required<string>();
+  private readonly meta = readPageMeta(inject(ActivatedRoute).snapshot);
 
-  protected readonly taskLabel = computed(() => String(this.task()).padStart(2, '0'));
-  protected readonly docPart = computed(() => (this.task() <= 5 ? 'Tasks 1–5' : 'Tasks 6–10'));
+  protected readonly target = this.meta?.target ?? '—';
+  protected readonly docPart = (this.meta?.task ?? 1) <= 5 ? 'Tasks 1–5' : 'Tasks 6–10';
 }
