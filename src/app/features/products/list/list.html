@@ -1,0 +1,44 @@
+<section class="toolbar">
+  <input
+    #q
+    type="search"
+    placeholder="Search products"
+    aria-label="Search products"
+    [value]="store.query()"
+    (input)="store.setQuery(q.value)"
+  />
+
+  <select #cat aria-label="Category" (change)="store.setCategory(cat.value || null)">
+    <option value="">All categories</option>
+    @for (c of store.categories(); track c) {
+      <option [value]="c" [selected]="c === store.category()">{{ c | titlecase }}</option>
+    }
+  </select>
+</section>
+
+@switch (store.status()) {
+  @case ('loading') {
+    <div class="grid">
+      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+        <div class="card skeleton"></div>
+      }
+    </div>
+  }
+  @case ('error') {
+    <div class="error" role="alert">
+      <p>{{ store.error() }}</p>
+      <button type="button" (click)="store.retry()">Retry</button>
+    </div>
+  }
+  @case ('success') {
+    @if (store.isEmpty()) {
+      <p class="empty">No products match your search.</p>
+    } @else {
+      <div class="grid">
+        @for (p of store.filtered(); track p.id) {
+          <app-card [product]="p" />
+        }
+      </div>
+    }
+  }
+}
